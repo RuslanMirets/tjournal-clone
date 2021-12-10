@@ -26,7 +26,7 @@ export default function Rating() {
         </Typography>
         <Tabs className="mt-10" value={0} indicatorColor="primary" textColor="primary">
           <Tab label="Август" />
-          <Tab label="За 3 месяцуа" />
+          <Tab label="За 3 месяца" />
           <Tab label="За всё время" />
         </Tabs>
       </Paper>

@@ -4,6 +4,8 @@ import { yupResolver } from '@hookform/resolvers/yup/dist/yup';
 import { RegisterFormSchema } from '../../../utils/validations';
 import { useForm, FormProvider } from 'react-hook-form';
 import { FormField } from '../../FormField';
+import { UserApi } from '../../../utils/api';
+import { CreateUserDto } from '../../../utils/api/types';
 
 interface RegisterFormProps {
   onOpenRegister: () => void;
@@ -16,7 +18,15 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({ onOpenLogin, onOpenR
     resolver: yupResolver(RegisterFormSchema),
   });
 
-  const onSubmit = (data) => console.log(data);
+  const onSubmit = async (dto: CreateUserDto) => {
+    try {
+      const data = await UserApi.register(dto);
+      console.log(data);
+    } catch (error) {
+      alert('Ошибка при регистрации');
+      console.warn('Register error', error);
+    }
+  };
 
   return (
     <div>
@@ -27,7 +37,7 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({ onOpenLogin, onOpenR
           <FormField name="password" label="Пароль" />
           <div className="d-flex align-center justify-between">
             <Button
-              disabled={!form.formState.isValid}
+              disabled={!form.formState.isValid || form.formState.isSubmitting}
               onClick={onOpenRegister}
               type="submit"
               color="primary"
