@@ -6,6 +6,8 @@ import { useForm, FormProvider } from 'react-hook-form';
 import { FormField } from '../../FormField';
 import { UserApi } from '../../../utils/api';
 import { CreateUserDto } from '../../../utils/api/types';
+import { setCookie } from 'nookies';
+import { Alert } from '@material-ui/lab';
 
 interface RegisterFormProps {
   onOpenRegister: () => void;
@@ -13,6 +15,7 @@ interface RegisterFormProps {
 }
 
 export const RegisterForm: React.FC<RegisterFormProps> = ({ onOpenLogin, onOpenRegister }) => {
+  const [errorMessage, setErrorMessage] = React.useState('');
   const form = useForm({
     mode: 'onChange',
     resolver: yupResolver(RegisterFormSchema),
@@ -22,9 +25,16 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({ onOpenLogin, onOpenR
     try {
       const data = await UserApi.register(dto);
       console.log(data);
+      setCookie(null, 'authToken', data.token, {
+        maxAge: 30 * 24 * 60 * 60,
+        path: '/',
+      });
+      setErrorMessage('');
     } catch (error) {
-      alert('Ошибка при регистрации');
-      console.warn('Register error', error);
+      console.warn('Login error', error);
+      if (error.response) {
+        setErrorMessage(error.response.data.message);
+      }
     }
   };
 
@@ -35,6 +45,11 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({ onOpenLogin, onOpenR
           <FormField name="fullName" label="Имя и фамилия" />
           <FormField name="email" label="Почта" />
           <FormField name="password" label="Пароль" />
+          {errorMessage && (
+            <Alert severity="error" className="mb-20">
+              {errorMessage}
+            </Alert>
+          )}
           <div className="d-flex align-center justify-between">
             <Button
               disabled={!form.formState.isValid || form.formState.isSubmitting}

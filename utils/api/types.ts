@@ -6,3 +6,12 @@ export type LoginDto = {
 export type CreateUserDto = {
   fullName: string;
 } & LoginDto;
+
+export type ResponseUser = {
+  createdAt: string;
+  email: string;
+  fullName: string;
+  id: number;
+  token: string;
+  updatedAt: string;
+}
