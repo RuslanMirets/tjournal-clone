@@ -1,17 +1,14 @@
+/* eslint-disable @next/next/no-page-custom-font */
 import Head from 'next/head';
-
 import { Header } from '../components/Header';
-
 import { MuiThemeProvider, CssBaseline } from '@material-ui/core';
 import { theme } from '../theme';
-
 import '../styles/globals.scss';
 import 'macro-css';
-import { Provider } from 'react-redux';
-import { store } from '../redux/store';
+import { wrapper } from '../redux/store';
 import { AppProps } from 'next/app';
 
-function MyApp({ Component, pageProps }: AppProps) {
+function App({ Component, pageProps }: AppProps) {
   return (
     <>
       <Head>
@@ -25,13 +22,11 @@ function MyApp({ Component, pageProps }: AppProps) {
       </Head>
       <MuiThemeProvider theme={theme}>
         <CssBaseline />
-        <Provider store={store}>
-          <Header />
-          <Component {...pageProps} />
-        </Provider>
+        <Header />
+        <Component {...pageProps} />
       </MuiThemeProvider>
     </>
   );
 }
-
-export default MyApp;
+5
+export default wrapper.withRedux(App);
