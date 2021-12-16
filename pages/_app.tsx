@@ -28,5 +28,5 @@ function App({ Component, pageProps }: AppProps) {
     </>
   );
 }
-5
+
 export default wrapper.withRedux(App);
