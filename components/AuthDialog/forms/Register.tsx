@@ -4,7 +4,7 @@ import { yupResolver } from '@hookform/resolvers/yup/dist/yup';
 import { RegisterFormSchema } from '../../../utils/validations';
 import { useForm, FormProvider } from 'react-hook-form';
 import { FormField } from '../../FormField';
-import { UserApi } from '../../../utils/api';
+import { UserApi } from '../../../utils/api/user';
 import { CreateUserDto } from '../../../utils/api/types';
 import { setCookie } from 'nookies';
 import { Alert } from '@material-ui/lab';
