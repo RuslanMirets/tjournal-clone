@@ -10,6 +10,7 @@ import { setCookie } from 'nookies';
 import { Alert } from '@material-ui/lab';
 import { useAppDispatch } from '../../../redux/hooks';
 import { setUserData } from '../../../redux/slices/user';
+import { Api } from '../../../utils/api';
 
 interface RegisterFormProps {
   onOpenRegister: () => void;
@@ -26,7 +27,7 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({ onOpenLogin, onOpenR
 
   const onSubmit = async (dto: CreateUserDto) => {
     try {
-      const data = await UserApi.register(dto);
+      const data = await Api().user.register(dto);
       console.log(data);
       setCookie(null, 'authToken', data.token, {
         maxAge: 30 * 24 * 60 * 60,
@@ -34,7 +35,7 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({ onOpenLogin, onOpenR
       });
       setErrorMessage('');
       dispatch(setUserData(data));
-    } catch (error) {
+    } catch (error: any) {
       console.warn('Register error', error);
       if (error.response) {
         setErrorMessage(error.response.data.message);
